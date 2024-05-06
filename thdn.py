@@ -74,6 +74,8 @@
 
 import numpy as np
 import soundfile as sf
+import os
+import sys
 
 def find_stationaries(fname):
 
@@ -164,11 +166,9 @@ def thdn(x):
     return f_opt, thdn_min, y_opt, levrms
 
 if __name__ == "__main__":
-    import os,sys
     if not (len(sys.argv)>1 and os.path.isfile(sys.argv[1])):
         print('usage: {} file.wav'.format(sys.argv[0]))
         sys.exit(1)
-    np.set_printoptions(threshold=sys.maxsize)
     for first, last, Fs, x in find_stationaries(sys.argv[1]):
         f,th,y,rms = thdn(x)
         print('[ {:.4f} , {:.4f} ] f0= {:.4f} Hz '
