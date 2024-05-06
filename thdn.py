@@ -167,4 +167,4 @@ if __name__ == "__main__":
         sys.exit(1)
     for first, last, Fs, x in find_stationaries(sys.argv[1]):
         f,th,y = thdn(x)
-        print('[{},{}] f0={} thdn={} dB'.format(first/Fs,last/Fs,f*Fs,20*np.log10(th)))
+        print('[ {:.4f} , {:.4f} ] f0= {:.4f} thdn= {:.4f} dB = {:.4f} %'.format(first/Fs,last/Fs,f*Fs,20*np.log10(th),th*100))
