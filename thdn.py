@@ -130,13 +130,14 @@ def thdn(x):
 
             A = np.hstack([np.ones(n.shape), np.cos(2*np.pi*f*n), np.sin(2*np.pi*f*n)])
 
-            c,E,_,_ = np.linalg.lstsq(A,x)
+            c,E,_,_ = np.linalg.lstsq(A,x,rcond=None)
             y=A*c
             if E.size == 0:
                 print(f)
                 continue
 
-            thdn_tmp = np.sqrt(float(E)) / np.linalg.norm(y)
+            err = E[0,0]
+            thdn_tmp = np.sqrt(float(err)) / np.linalg.norm(y)
 
             if thdn_tmp < thdn_min:
                 thdn_min = thdn_tmp
