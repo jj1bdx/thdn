@@ -151,7 +151,7 @@ def thdn(x):
             res[k,1] = thdn_tmp
 
 
-        if 20*np.log10(thdn_max/thdn_min) < 1:
+        if 20*np.log10(thdn_max/thdn_min) < 1.0:
             break
 
         f_delta = (f_stop - f_start)/20
@@ -165,6 +165,14 @@ if __name__ == "__main__":
     if not (len(sys.argv)>1 and os.path.isfile(sys.argv[1])):
         print('usage: {} file.wav'.format(sys.argv[0]))
         sys.exit(1)
+    np.set_printoptions(threshold=sys.maxsize)
     for first, last, Fs, x in find_stationaries(sys.argv[1]):
         f,th,y = thdn(x)
-        print('[ {:.4f} , {:.4f} ] f0= {:.4f} thdn= {:.4f} dB = {:.4f} %'.format(first/Fs,last/Fs,f*Fs,20*np.log10(th),th*100))
+        print('[ {:.4f} , {:.4f} ] f0= {:.4f} Hz '
+              'thdn= {:.4f} dB = {:.4f} % '
+              'sinrms = {:.4f} dB'
+              .format(first/Fs, last/Fs,
+                      f*Fs,
+                      20*np.log10(th),th*100,
+                      20*np.log10(np.sqrt(np.mean(np.square(y))))
+                      ))
