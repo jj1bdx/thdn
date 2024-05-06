@@ -73,19 +73,14 @@
 #    * Better interface
 
 import numpy as np
-import wave
+import soundfile as sf
 
 def find_stationaries(fname):
 
-    wf = wave.open(fname, 'rb')
-
-    nchans = wf.getnchannels()
-    R      = wf.getsampwidth()
-    Fs     = wf.getframerate()
-    N      = wf.getnframes()
-
-    # support more bitwidths
-    x = np.fromstring(wf.readframes(N), {2:np.dtype('<i2')}[R]) / 2**(8*R-1)
+    wf, Fs = sf.read(fname, always_2d=True)
+    # always use the first channel (left for stereo)
+    x = [elem[0] for elem in wf]
+    N = len(x)
 
     K = 1024*4
 
