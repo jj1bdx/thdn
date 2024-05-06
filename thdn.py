@@ -73,11 +73,11 @@
 #    * Better interface
 
 import numpy as np
+import wave
 
 def find_stationaries(fname):
-    import wave
 
-    wf = wave.open(fname)
+    wf = wave.open(fname, 'rb')
 
     nchans = wf.getnchannels()
     R      = wf.getsampwidth()
