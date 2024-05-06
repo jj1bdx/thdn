@@ -150,7 +150,6 @@ def thdn(x):
             res[k,0] = f
             res[k,1] = thdn_tmp
 
-
         if 20*np.log10(thdn_max/thdn_min) < 1.0:
             break
 
@@ -158,7 +157,11 @@ def thdn(x):
         f_start = max(f_opt-f_delta/2, 0.0)
         f_stop  = min(f_opt+f_delta/2, 0.5)
 
-    return f_opt, thdn_min, y_opt
+    levc = c[1,0]
+    levs = c[2,0]
+    levrms = np.sqrt((levc*levc + levs*levs)/2.0)
+
+    return f_opt, thdn_min, y_opt, levrms
 
 if __name__ == "__main__":
     import os,sys
@@ -167,12 +170,12 @@ if __name__ == "__main__":
         sys.exit(1)
     np.set_printoptions(threshold=sys.maxsize)
     for first, last, Fs, x in find_stationaries(sys.argv[1]):
-        f,th,y = thdn(x)
+        f,th,y,rms = thdn(x)
         print('[ {:.4f} , {:.4f} ] f0= {:.4f} Hz '
               'thdn= {:.4f} dB = {:.4f} % '
-              'sinrms = {:.4f} dB'
+              'sigrms = {:.4f} dB '
               .format(first/Fs, last/Fs,
                       f*Fs,
                       20*np.log10(th),th*100,
-                      20*np.log10(np.sqrt(np.mean(np.square(y))))
+                      20*np.log10(rms)
                       ))
